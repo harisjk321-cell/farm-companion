@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Community Forum - GROOT</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .modal.active {
+      display: flex;
+    }
+    
+    .modal-content {
+      background: hsl(var(--card));
+      border-radius: 1rem;
+      padding: 2rem;
+      max-width: 500px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+  <nav id="navigation"></nav>
+  
+  <main class="container">
+    <div class="mb-8" style="display: flex; justify-content: space-between; align-items: start;">
+      <div>
+        <h1 style="font-size: 2.5rem; font-weight: bold; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.75rem;">
+          👥 Community Forum
+        </h1>
+        <p style="color: hsl(var(--muted-foreground));">Share ideas, ask questions, and connect with fellow farmers</p>
+      </div>
+      <button class="btn btn-primary" onclick="openModal()" style="display: flex; align-items: center; gap: 0.5rem;">
+        ➕ New Post
+      </button>
+    </div>
+
+    <div id="posts-container">
+      <div class="loading">
+        <div class="spinner"></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal -->
+  <div id="post-modal" class="modal">
+    <div class="modal-content">
+      <h2 style="font-size: 1.5rem; font-weight: bold; margin-bottom: 1.5rem;">Create New Post</h2>
+      <form id="post-form">
+        <div class="form-group">
+          <label for="title">Post Title</label>
+          <input type="text" id="title" required>
+        </div>
+        <div class="form-group">
+          <label for="category">Category (optional)</label>
+          <input type="text" id="category">
+        </div>
+        <div class="form-group">
+          <label for="content">Content</label>
+          <textarea id="content" rows="6" required placeholder="Share your ideas, questions, or experiences..."></textarea>
+        </div>
+        <div style="display: flex; gap: 1rem;">
+          <button type="submit" class="btn btn-primary" style="flex: 1;">Post to Forum</button>
+          <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="navigation.js"></script>
+  <script src="auth-check.js"></script>
+  <script>
+    const postsContainer = document.getElementById('posts-container');
+    const postForm = document.getElementById('post-form');
+    
+    async function loadPosts() {
+      try {
+        const data = await supabaseRequest('/rest/v1/forum_posts?select=*&order=created_at.desc');
+        
+        if (data.length === 0) {
+          postsContainer.innerHTML = `
+            <div class="card" style="padding: 3rem; text-align: center;">
+              <div style="font-size: 4rem; margin-bottom: 1rem;">💬</div>
+              <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem;">No posts yet</h3>
+              <p style="color: hsl(var(--muted-foreground)); margin-bottom: 1rem;">Be the first to start a conversation!</p>
+            </div>
+          `;
+        } else {
+          postsContainer.innerHTML = data.map(post => `
+            <div class="card" style="margin-bottom: 1rem; transition: all 0.3s; cursor: pointer;" 
+                 onmouseenter="this.style.boxShadow='0 10px 30px rgba(0,0,0,0.1)'"
+                 onmouseleave="this.style.boxShadow=''">
+              ${post.category ? `
+                <div style="margin-bottom: 0.75rem;">
+                  <span style="font-size: 0.75rem; background: hsla(var(--primary), 0.1); color: hsl(var(--primary)); padding: 0.25rem 0.5rem; border-radius: 9999px;">
+                    ${post.category}
+                  </span>
+                </div>
+              ` : ''}
+              <h3 style="font-size: 1.25rem; font-weight: bold; margin-bottom: 0.5rem;">${post.title}</h3>
+              <p style="color: hsl(var(--muted-foreground)); margin-bottom: 1rem;">${post.content}</p>
+              <div style="display: flex; justify-content: space-between; font-size: 0.875rem; color: hsl(var(--muted-foreground));">
+                <span>Posted ${new Date(post.created_at).toLocaleDateString()}</span>
+              </div>
+            </div>
+          `).join('');
+        }
+      } catch (error) {
+        postsContainer.innerHTML = `
+          <div class="card" style="padding: 2rem; text-align: center;">
+            <p style="color: hsl(var(--destructive));">Failed to load forum posts. Please try again.</p>
+          </div>
+        `;
+      }
+    }
+    
+    function openModal() {
+      document.getElementById('post-modal').classList.add('active');
+    }
+    
+    function closeModal() {
+      document.getElementById('post-modal').classList.remove('active');
+      postForm.reset();
+    }
+    
+    postForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const user = JSON.parse(localStorage.getItem('groot_user') || 'null');
+      if (!user) {
+        showToast('Please sign in to post to the forum', 'error');
+        return;
+      }
+      
+      const title = document.getElementById('title').value;
+      const content = document.getElementById('content').value;
+      const category = document.getElementById('category').value || 'General';
+      
+      try {
+        await supabaseRequest('/rest/v1/forum_posts', {
+          method: 'POST',
+          body: JSON.stringify({ title, content, category, user_id: user.id })
+        });
+        
+        showToast('Your post has been created', 'success');
+        closeModal();
+        loadPosts();
+      } catch (error) {
+        showToast('Failed to create post: ' + error.message, 'error');
+      }
+    });
+    
+    // Close modal on background click
+    document.getElementById('post-modal').addEventListener('click', (e) => {
+      if (e.target.id === 'post-modal') {
+        closeModal();
+      }
+    });
+    
+    loadPosts();
+  </script>
+</body>
+</html>

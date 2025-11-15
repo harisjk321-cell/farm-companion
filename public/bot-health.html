@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Robot Fleet Health - GROOT</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <nav id="navigation"></nav>
+  
+  <main class="container">
+    <div class="mb-8">
+      <h1 style="font-size: 2.5rem; font-weight: bold; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.75rem;">
+        🤖 Robot Fleet Health
+      </h1>
+      <p style="color: hsl(var(--muted-foreground));">Monitor and manage your autonomous farming robots</p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(500px, 1fr)); gap: 1.5rem;">
+      <!-- Scout Robot Alpha -->
+      <div class="card">
+        <div style="margin-bottom: 1.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+            <div>
+              <h2 style="font-size: 1.5rem; font-weight: bold; margin-bottom: 0.25rem;">Scout Robot Alpha</h2>
+              <p style="font-size: 0.875rem; color: hsl(var(--muted-foreground));">Scout Robot</p>
+            </div>
+            <div class="status-badge status-operational">
+              <span class="status-dot" style="background: hsl(var(--success));"></span>
+              <span>Operational</span>
+            </div>
+          </div>
+
+          <!-- Battery -->
+          <div style="margin-bottom: 1rem;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span>🔋</span>
+                <span style="font-weight: 600; font-size: 0.875rem;">Battery Level</span>
+              </div>
+              <span style="font-weight: bold; font-size: 0.875rem;">95%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill progress-success" style="width: 95%;"></div>
+            </div>
+          </div>
+
+          <!-- Info -->
+          <div style="margin-bottom: 1rem;">
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+              <span>📍</span>
+              <span style="font-size: 0.875rem;"><strong>Current Location:</strong> Field A - Sector 3</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+              <span>🕐</span>
+              <span style="font-size: 0.875rem;"><strong>Last Maintenance:</strong> 2 days ago</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <span>⚡</span>
+              <span style="font-size: 0.875rem;"><strong>Active Today:</strong> 6.5 hours</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Metrics -->
+        <div style="border-top: 1px solid hsl(var(--border)); padding-top: 1rem;">
+          <h3 style="font-weight: 600; margin-bottom: 0.75rem;">Performance Metrics</h3>
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; text-align: center;">
+            <div>
+              <p style="font-size: 1.5rem; font-weight: bold; color: hsl(var(--primary));">12.4 km</p>
+              <p style="font-size: 0.75rem; color: hsl(var(--muted-foreground));">Distance Covered</p>
+            </div>
+            <div>
+              <p style="font-size: 1.5rem; font-weight: bold; color: hsl(var(--primary));">1,247</p>
+              <p style="font-size: 0.75rem; color: hsl(var(--muted-foreground));">Plants Scanned</p>
+            </div>
+            <div>
+              <p style="font-size: 1.5rem; font-weight: bold; color: hsl(var(--primary));">23</p>
+              <p style="font-size: 0.75rem; color: hsl(var(--muted-foreground));">Issues Detected</p>
+            </div>
+          </div>
+          <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid hsl(var(--border)); text-align: center;">
+            <p style="font-size: 0.875rem;">
+              <strong style="color: hsl(var(--primary));">847</strong> total tasks completed
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Weeder Robot Beta -->
+      <div class="card">
+        <div style="margin-bottom: 1.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+            <div>
+              <h2 style="font-size: 1.5rem; font-weight: bold; margin-bottom: 0.25rem;">Weeder Robot Beta</h2>
+              <p style="font-size: 0.875rem; color: hsl(var(--muted-foreground));">Weeder Robot</p>
+            </div>
+            <div class="status-badge status-operational">
+              <span class="status-dot" style="background: hsl(var(--success));"></span>
+              <span>Operational</span>
+            </div>
+          </div>
+
+          <!-- Battery -->
+          <div style="margin-bottom: 1rem;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span>🔋</span>
+                <span style="font-weight: 600; font-size: 0.875rem;">Battery Level</span>
+              </div>
+              <span style="font-weight: bold; font-size: 0.875rem;">88%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill progress-success" style="width: 88%;"></div>
+            </div>
+          </div>
+
+          <!-- Info -->
+          <div style="margin-bottom: 1rem;">
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+              <span>📍</span>
+              <span style="font-size: 0.875rem;"><strong>Current Location:</strong> Field B - Sector 1</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+              <span>🕐</span>
+              <span style="font-size: 0.875rem;"><strong>Last Maintenance:</strong> 5 days ago</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <span>⚡</span>
+              <span style="font-size: 0.875rem;"><strong>Active Today:</strong> 5.2 hours</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Metrics -->
+        <div style="border-top: 1px solid hsl(var(--border)); padding-top: 1rem;">
+          <h3 style="font-weight: 600; margin-bottom: 0.75rem;">Performance Metrics</h3>
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; text-align: center;">
+            <div>
+              <p style="font-size: 1.5rem; font-weight: bold; color: hsl(var(--primary));">8.7 ha</p>
+              <p style="font-size: 0.75rem; color: hsl(var(--muted-foreground));">Area Cleared</p>
+            </div>
+            <div>
+              <p style="font-size: 1.5rem; font-weight: bold; color: hsl(var(--primary));">3,456</p>
+              <p style="font-size: 0.75rem; color: hsl(var(--muted-foreground));">Weeds Removed</p>
+            </div>
+            <div>
+              <p style="font-size: 1.5rem; font-weight: bold; color: hsl(var(--primary));">94%</p>
+              <p style="font-size: 0.75rem; color: hsl(var(--muted-foreground));">Efficiency</p>
+            </div>
+          </div>
+          <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid hsl(var(--border)); text-align: center;">
+            <p style="font-size: 0.875rem;">
+              <strong style="color: hsl(var(--primary));">623</strong> total tasks completed
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="navigation.js"></script>
+  <script src="auth-check.js"></script>
+</body>
+</html>

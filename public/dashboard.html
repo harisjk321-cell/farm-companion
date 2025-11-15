@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - GROOT</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <nav id="navigation"></nav>
+  
+  <main class="container">
+    <div class="mb-8">
+      <h1 style="font-size: 2.5rem; font-weight: bold; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.75rem;">
+        📊 Farm Dashboard
+      </h1>
+      <p style="color: hsl(var(--muted-foreground));">Your comprehensive farm management overview</p>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+          <h3 style="font-weight: 600;">Active Robots</h3>
+          <span style="font-size: 1.5rem;">🤖</span>
+        </div>
+        <p class="stat-value">2</p>
+        <p class="stat-label">All systems operational</p>
+      </div>
+
+      <div class="stat-card">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+          <h3 style="font-weight: 600;">Healthy Plants</h3>
+          <span style="font-size: 1.5rem;">🌱</span>
+        </div>
+        <p class="stat-value">1,247</p>
+        <p class="stat-label" style="color: hsl(var(--success));">+5% from last week</p>
+      </div>
+
+      <div class="stat-card">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+          <h3 style="font-weight: 600;">Temperature</h3>
+          <span style="font-size: 1.5rem;">🌡️</span>
+        </div>
+        <p class="stat-value">24°C</p>
+        <p class="stat-label">Optimal conditions</p>
+      </div>
+
+      <div class="stat-card">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+          <h3 style="font-weight: 600;">Soil Moisture</h3>
+          <span style="font-size: 1.5rem;">💧</span>
+        </div>
+        <p class="stat-value">65%</p>
+        <p class="stat-label">Perfect level</p>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="card">
+      <h2 style="font-size: 1.5rem; font-weight: bold; margin-bottom: 1.5rem;">Quick Actions</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+        <a href="bot-health.html" class="btn btn-secondary" style="text-align: center;">Monitor Robots</a>
+        <a href="plant-health.html" class="btn btn-secondary" style="text-align: center;">Check Plant Health</a>
+        <a href="sensor-data.html" class="btn btn-secondary" style="text-align: center;">View Sensor Data</a>
+        <a href="chatbot.html" class="btn btn-primary" style="text-align: center;">Ask GROOT AI</a>
+      </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="card">
+      <h2 style="font-size: 1.5rem; font-weight: bold; margin-bottom: 1.5rem;">Recent Activity</h2>
+      <div style="space-y: 1rem;">
+        <div style="padding: 1rem; background: hsl(var(--muted)); border-radius: 0.5rem; margin-bottom: 0.75rem;">
+          <div style="display: flex; justify-content: space-between; align-items: start;">
+            <div>
+              <p style="font-weight: 600; margin-bottom: 0.25rem;">Scout Robot Alpha completed field scan</p>
+              <p style="font-size: 0.875rem; color: hsl(var(--muted-foreground));">Scanned 1,247 plants in Field A - Sector 3</p>
+            </div>
+            <span style="font-size: 0.75rem; color: hsl(var(--muted-foreground));">2 hours ago</span>
+          </div>
+        </div>
+        
+        <div style="padding: 1rem; background: hsl(var(--muted)); border-radius: 0.5rem; margin-bottom: 0.75rem;">
+          <div style="display: flex; justify-content: space-between; align-items: start;">
+            <div>
+              <p style="font-weight: 600; margin-bottom: 0.25rem;">23 plants need attention</p>
+              <p style="font-size: 0.875rem; color: hsl(var(--muted-foreground));">Issues detected across 3 sectors</p>
+            </div>
+            <span style="font-size: 0.75rem; color: hsl(var(--muted-foreground));">3 hours ago</span>
+          </div>
+        </div>
+        
+        <div style="padding: 1rem; background: hsl(var(--muted)); border-radius: 0.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: start;">
+            <div>
+              <p style="font-weight: 600; margin-bottom: 0.25rem;">Weather conditions optimal</p>
+              <p style="font-size: 0.875rem; color: hsl(var(--muted-foreground));">Perfect for plant growth</p>
+            </div>
+            <span style="font-size: 0.75rem; color: hsl(var(--muted-foreground));">5 hours ago</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="navigation.js"></script>
+  <script src="auth-check.js"></script>
+</body>
+</html>

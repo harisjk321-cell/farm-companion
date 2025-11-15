@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sensor Data & Weather - GROOT</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <nav id="navigation"></nav>
+  
+  <main class="container">
+    <div class="mb-8">
+      <h1 style="font-size: 2.5rem; font-weight: bold; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.75rem;">
+        ☁️ Sensor Data & Weather
+      </h1>
+      <p style="color: hsl(var(--muted-foreground));">Environmental monitoring and weather conditions</p>
+    </div>
+
+    <!-- Current Weather -->
+    <div class="mb-8">
+      <h2 style="font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem;">Current Conditions</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+        <div class="card" style="text-align: center;">
+          <span style="font-size: 2rem; margin-bottom: 0.75rem; display: block;">🌡️</span>
+          <p style="font-size: 0.875rem; color: hsl(var(--muted-foreground)); margin-bottom: 0.25rem;">Temperature</p>
+          <p style="font-size: 1.5rem; font-weight: bold;">24°C</p>
+        </div>
+
+        <div class="card" style="text-align: center;">
+          <span style="font-size: 2rem; margin-bottom: 0.75rem; display: block;">💧</span>
+          <p style="font-size: 0.875rem; color: hsl(var(--muted-foreground)); margin-bottom: 0.25rem;">Humidity</p>
+          <p style="font-size: 1.5rem; font-weight: bold;">65%</p>
+        </div>
+
+        <div class="card" style="text-align: center;">
+          <span style="font-size: 2rem; margin-bottom: 0.75rem; display: block;">💨</span>
+          <p style="font-size: 0.875rem; color: hsl(var(--muted-foreground)); margin-bottom: 0.25rem;">Wind Speed</p>
+          <p style="font-size: 1.5rem; font-weight: bold;">12 km/h</p>
+        </div>
+
+        <div class="card" style="text-align: center;">
+          <span style="font-size: 2rem; margin-bottom: 0.75rem; display: block;">☁️</span>
+          <p style="font-size: 0.875rem; color: hsl(var(--muted-foreground)); margin-bottom: 0.25rem;">Rainfall</p>
+          <p style="font-size: 1.5rem; font-weight: bold;">0 mm</p>
+        </div>
+
+        <div class="card" style="text-align: center;">
+          <span style="font-size: 2rem; margin-bottom: 0.75rem; display: block;">☀️</span>
+          <p style="font-size: 0.875rem; color: hsl(var(--muted-foreground)); margin-bottom: 0.25rem;">UV Index</p>
+          <p style="font-size: 1.5rem; font-weight: bold;">6 (High)</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sensor Data Display -->
+    <div class="card" style="padding: 3rem;">
+      <div style="text-align: center; padding: 3rem 0;">
+        <div style="font-size: 4rem; margin-bottom: 1rem;">☁️</div>
+        <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem;">Sensor Network Data</h3>
+        <p style="color: hsl(var(--muted-foreground)); max-width: 500px; margin: 0 auto;">
+          Soil moisture, pH levels, nutrient content, and other sensor readings from your field network 
+          will be displayed here. Connect your IoT sensors to start monitoring.
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <script src="navigation.js"></script>
+  <script src="auth-check.js"></script>
+</body>
+</html>
