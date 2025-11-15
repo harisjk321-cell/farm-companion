@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In - GROOT</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .auth-container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, hsla(var(--primary), 0.1), hsla(var(--accent), 0.1));
+      padding: 2rem;
+    }
+    
+    .auth-card {
+      background: hsl(var(--card));
+      border-radius: 1rem;
+      padding: 3rem;
+      max-width: 400px;
+      width: 100%;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    .auth-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    
+    .auth-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+    
+    .auth-title {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+    
+    .auth-toggle {
+      text-align: center;
+      margin-top: 1.5rem;
+    }
+    
+    .auth-toggle button {
+      background: none;
+      border: none;
+      color: hsl(var(--primary));
+      text-decoration: underline;
+      cursor: pointer;
+      font-size: 0.875rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="auth-container">
+    <div class="auth-card">
+      <div class="auth-header">
+        <div class="auth-icon">🌱</div>
+        <h1 class="auth-title">GROOT</h1>
+        <p id="auth-subtitle" style="color: hsl(var(--muted-foreground));">Welcome back!</p>
+      </div>
+      
+      <form id="auth-form">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" required minlength="6">
+        </div>
+        
+        <button type="submit" class="btn btn-primary" style="width: 100%;" id="submit-btn">
+          Sign In
+        </button>
+      </form>
+      
+      <div class="auth-toggle">
+        <p style="color: hsl(var(--muted-foreground)); font-size: 0.875rem;">
+          <span id="toggle-text">Don't have an account?</span>
+          <button type="button" id="toggle-btn">Sign up</button>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script>
+    let isLogin = true;
+    
+    const form = document.getElementById('auth-form');
+    const subtitle = document.getElementById('auth-subtitle');
+    const submitBtn = document.getElementById('submit-btn');
+    const toggleText = document.getElementById('toggle-text');
+    const toggleBtn = document.getElementById('toggle-btn');
+    
+    toggleBtn.addEventListener('click', () => {
+      isLogin = !isLogin;
+      if (isLogin) {
+        subtitle.textContent = 'Welcome back!';
+        submitBtn.textContent = 'Sign In';
+        toggleText.textContent = "Don't have an account?";
+        toggleBtn.textContent = 'Sign up';
+      } else {
+        subtitle.textContent = 'Create your account';
+        submitBtn.textContent = 'Sign Up';
+        toggleText.textContent = 'Already have an account?';
+        toggleBtn.textContent = 'Sign in';
+      }
+    });
+    
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Loading...';
+      
+      try {
+        const endpoint = isLogin ? '/auth/v1/token?grant_type=password' : '/auth/v1/signup';
+        const response = await fetch(`${SUPABASE_URL}${endpoint}`, {
+          method: 'POST',
+          headers: {
+            'apikey': SUPABASE_ANON_KEY,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email, password })
+        });
+        
+        const data = await response.json();
+        
+        if (!response.ok) {
+          throw new Error(data.error_description || data.msg || 'Authentication failed');
+        }
+        
+        if (isLogin) {
+          localStorage.setItem('groot_user', JSON.stringify(data.user));
+          localStorage.setItem('groot_session', JSON.stringify(data));
+          showToast('Welcome back!', 'success');
+          window.location.href = 'dashboard.html';
+        } else {
+          showToast('Account created! Please sign in.', 'success');
+          isLogin = true;
+          toggleBtn.click();
+        }
+      } catch (error) {
+        showToast(error.message, 'error');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = isLogin ? 'Sign In' : 'Sign Up';
+      }
+    });
+  </script>
+</body>
+</html>
