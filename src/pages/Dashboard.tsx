@@ -10,9 +10,9 @@ const Dashboard = () => {
   ];
 
   const quickStats = [
-    { icon: Leaf, label: "Healthy Plants", value: "1,247", color: "text-success" },
+    { icon: Leaf, label: "Healthy Plants", value: "2", color: "text-success" },
     { icon: AlertTriangle, label: "Need Attention", value: "23", color: "text-warning" },
-    { icon: Activity, label: "Active Sensors", value: "48", color: "text-info" },
+    { icon: Activity, label: "Active Sensors", value: "5", color: "text-info" },
   ];
 
   return (
