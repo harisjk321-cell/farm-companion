@@ -181,31 +181,137 @@ const PlantHealth = () => {
         </div>
 
         {analysis ? (
-          <div>
-            <div className="flex items-center gap-3 mb-6 p-4 bg-muted rounded-lg">
-              <StatusIcon className={`w-8 h-8 ${healthStatus.color}`} />
-              <div>
-                <p className="text-sm text-muted-foreground">Overall Status</p>
-                <p className={`text-2xl font-bold ${healthStatus.color}`}>
-                  {healthStatus.status}
-                </p>
+          <div className="space-y-6">
+            {/* Overall Status Banner */}
+            <div className="relative overflow-hidden rounded-xl bg-gradient-to-r from-primary/10 via-primary/5 to-background p-6 border-2 border-primary/20">
+              <div className="flex items-center gap-4">
+                <div className="relative">
+                  <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full" />
+                  <StatusIcon className={`relative w-16 h-16 ${healthStatus.color}`} />
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm text-muted-foreground font-medium mb-1">Overall Farm Status</p>
+                  <p className={`text-4xl font-bold ${healthStatus.color}`}>
+                    {healthStatus.status}
+                  </p>
+                </div>
               </div>
             </div>
-            
-            <div className="prose prose-sm max-w-none">
-              <div className="whitespace-pre-wrap text-foreground">
-                {analysis}
+
+            {/* Sensor Status Visualizations */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Card className="p-4 border-l-4 border-l-primary">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm font-medium text-muted-foreground">Air Quality</span>
+                  <span className="text-lg font-bold">{sensorData.aqi}</span>
+                </div>
+                <div className="w-full bg-muted rounded-full h-2">
+                  <div 
+                    className="bg-gradient-to-r from-success to-primary h-2 rounded-full transition-all"
+                    style={{ width: `${Math.min(100, (parseInt(sensorData.aqi) / 50) * 100)}%` }}
+                  />
+                </div>
+              </Card>
+
+              <Card className="p-4 border-l-4 border-l-info">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm font-medium text-muted-foreground">Soil Moisture Avg</span>
+                  <span className="text-lg font-bold">
+                    {((parseFloat(sensorData.soilPlot1) + parseFloat(sensorData.soilPlot2)) / 2).toFixed(0)}%
+                  </span>
+                </div>
+                <div className="w-full bg-muted rounded-full h-2">
+                  <div 
+                    className="bg-gradient-to-r from-info to-primary h-2 rounded-full transition-all"
+                    style={{ width: `${((parseFloat(sensorData.soilPlot1) + parseFloat(sensorData.soilPlot2)) / 2)}%` }}
+                  />
+                </div>
+              </Card>
+
+              <Card className="p-4 border-l-4 border-l-warning">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm font-medium text-muted-foreground">pH Level</span>
+                  <span className="text-lg font-bold">{sensorData.ph}</span>
+                </div>
+                <div className="flex gap-1 h-2">
+                  {[...Array(14)].map((_, i) => (
+                    <div 
+                      key={i}
+                      className={`flex-1 rounded-sm transition-all ${
+                        Math.abs(i - parseFloat(sensorData.ph)) < 0.5 
+                          ? 'bg-warning' 
+                          : 'bg-muted'
+                      }`}
+                    />
+                  ))}
+                </div>
+                <div className="flex justify-between text-xs text-muted-foreground mt-1">
+                  <span>0</span>
+                  <span>7</span>
+                  <span>14</span>
+                </div>
+              </Card>
+
+              <Card className="p-4 border-l-4 border-l-success">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm font-medium text-muted-foreground">Water Temp</span>
+                  <span className="text-lg font-bold">{sensorData.waterTemp}</span>
+                </div>
+                <div className="w-full bg-muted rounded-full h-2">
+                  <div 
+                    className="bg-gradient-to-r from-info via-success to-warning h-2 rounded-full transition-all"
+                    style={{ width: `${(parseFloat(sensorData.waterTemp) / 40) * 100}%` }}
+                  />
+                </div>
+                <div className="flex justify-between text-xs text-muted-foreground mt-1">
+                  <span>0°C</span>
+                  <span>40°C</span>
+                </div>
+              </Card>
+            </div>
+
+            {/* AI Analysis Text */}
+            <Card className="p-6 bg-muted/50">
+              <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                <Leaf className="w-5 h-5 text-primary" />
+                Detailed Analysis & Recommendations
+              </h3>
+              <div className="prose prose-sm max-w-none dark:prose-invert">
+                <div className="whitespace-pre-wrap text-foreground leading-relaxed">
+                  {analysis}
+                </div>
               </div>
+            </Card>
+
+            {/* Action Button */}
+            <div className="flex justify-center pt-4">
+              <Button 
+                onClick={analyzeHealth} 
+                variant="outline"
+                className="gap-2"
+                disabled={analyzing}
+              >
+                <RefreshCw className="w-4 h-4" />
+                Run New Analysis
+              </Button>
             </div>
           </div>
         ) : (
           <div className="text-center py-12">
-            <Leaf className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-            <h3 className="text-xl font-semibold mb-2">Ready to Analyze</h3>
-            <p className="text-muted-foreground max-w-md mx-auto">
+            <div className="relative inline-block mb-6">
+              <div className="absolute inset-0 bg-primary/20 blur-2xl rounded-full" />
+              <Leaf className="relative w-20 h-20 text-primary" />
+            </div>
+            <h3 className="text-2xl font-semibold mb-2">Ready to Analyze</h3>
+            <p className="text-muted-foreground max-w-md mx-auto mb-6">
               Click "Analyze Plant Health" to get AI-powered insights and recommendations 
               based on your current sensor data.
             </p>
+            <div className="flex flex-wrap justify-center gap-2 text-sm text-muted-foreground">
+              <span className="px-3 py-1 bg-muted rounded-full">✓ Real-time Data</span>
+              <span className="px-3 py-1 bg-muted rounded-full">✓ AI-Powered</span>
+              <span className="px-3 py-1 bg-muted rounded-full">✓ Actionable Insights</span>
+            </div>
           </div>
         )}
       </Card>
