@@ -14,57 +14,101 @@
       <h1 style="font-size: 2.5rem; font-weight: bold; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.75rem;">
         ☁️ Sensor Data & Weather
       </h1>
-      <p style="color: hsl(var(--muted-foreground));">Environmental monitoring and weather conditions</p>
+      <p style="color: hsl(var(--muted-foreground));">Real-time environmental monitoring and sensor data</p>
     </div>
 
-    <!-- Current Weather -->
+    <!-- Atmosphere & Ground Section -->
     <div class="mb-8">
-      <h2 style="font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem;">Current Conditions</h2>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+      <h2 style="font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+        🌍 Atmosphere & Ground
+      </h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
         <div class="card" style="text-align: center;">
-          <span style="font-size: 2rem; margin-bottom: 0.75rem; display: block;">🌡️</span>
-          <p style="font-size: 0.875rem; color: hsl(var(--muted-foreground)); margin-bottom: 0.25rem;">Temperature</p>
-          <p style="font-size: 1.5rem; font-weight: bold;">24°C</p>
+          <span style="font-size: 2rem; margin-bottom: 0.75rem; display: block;">💨</span>
+          <p style="font-size: 0.875rem; color: hsl(var(--muted-foreground)); margin-bottom: 0.25rem;">Air Quality Index</p>
+          <p id="aqi-value" style="font-size: 1.5rem; font-weight: bold;">Loading...</p>
         </div>
 
         <div class="card" style="text-align: center;">
           <span style="font-size: 2rem; margin-bottom: 0.75rem; display: block;">💧</span>
-          <p style="font-size: 0.875rem; color: hsl(var(--muted-foreground)); margin-bottom: 0.25rem;">Humidity</p>
-          <p style="font-size: 1.5rem; font-weight: bold;">65%</p>
+          <p style="font-size: 0.875rem; color: hsl(var(--muted-foreground)); margin-bottom: 0.25rem;">Soil Moisture - Plot 1</p>
+          <p id="soil-plot1" style="font-size: 1.5rem; font-weight: bold;">Loading...</p>
         </div>
 
         <div class="card" style="text-align: center;">
-          <span style="font-size: 2rem; margin-bottom: 0.75rem; display: block;">💨</span>
-          <p style="font-size: 0.875rem; color: hsl(var(--muted-foreground)); margin-bottom: 0.25rem;">Wind Speed</p>
-          <p style="font-size: 1.5rem; font-weight: bold;">12 km/h</p>
-        </div>
-
-        <div class="card" style="text-align: center;">
-          <span style="font-size: 2rem; margin-bottom: 0.75rem; display: block;">☁️</span>
-          <p style="font-size: 0.875rem; color: hsl(var(--muted-foreground)); margin-bottom: 0.25rem;">Rainfall</p>
-          <p style="font-size: 1.5rem; font-weight: bold;">0 mm</p>
-        </div>
-
-        <div class="card" style="text-align: center;">
-          <span style="font-size: 2rem; margin-bottom: 0.75rem; display: block;">☀️</span>
-          <p style="font-size: 0.875rem; color: hsl(var(--muted-foreground)); margin-bottom: 0.25rem;">UV Index</p>
-          <p style="font-size: 1.5rem; font-weight: bold;">6 (High)</p>
+          <span style="font-size: 2rem; margin-bottom: 0.75rem; display: block;">💧</span>
+          <p style="font-size: 0.875rem; color: hsl(var(--muted-foreground)); margin-bottom: 0.25rem;">Soil Moisture - Plot 2</p>
+          <p id="soil-plot2" style="font-size: 1.5rem; font-weight: bold;">Loading...</p>
         </div>
       </div>
     </div>
 
-    <!-- Sensor Data Display -->
-    <div class="card" style="padding: 3rem;">
-      <div style="text-align: center; padding: 3rem 0;">
-        <div style="font-size: 4rem; margin-bottom: 1rem;">☁️</div>
-        <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem;">Sensor Network Data</h3>
-        <p style="color: hsl(var(--muted-foreground)); max-width: 500px; margin: 0 auto;">
-          Soil moisture, pH levels, nutrient content, and other sensor readings from your field network 
-          will be displayed here. Connect your IoT sensors to start monitoring.
-        </p>
+    <!-- Hydroponic Data Section -->
+    <div class="mb-8">
+      <h2 style="font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+        🌱 Hydroponic System
+      </h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+        <div class="card" style="text-align: center;">
+          <span style="font-size: 2rem; margin-bottom: 0.75rem; display: block;">⚗️</span>
+          <p style="font-size: 0.875rem; color: hsl(var(--muted-foreground)); margin-bottom: 0.25rem;">pH Level</p>
+          <p id="ph-value" style="font-size: 1.5rem; font-weight: bold;">Loading...</p>
+        </div>
+
+        <div class="card" style="text-align: center;">
+          <span style="font-size: 2rem; margin-bottom: 0.75rem; display: block;">🌊</span>
+          <p style="font-size: 0.875rem; color: hsl(var(--muted-foreground)); margin-bottom: 0.25rem;">Turbidity</p>
+          <p id="turbidity-value" style="font-size: 1.5rem; font-weight: bold;">Loading...</p>
+        </div>
+
+        <div class="card" style="text-align: center;">
+          <span style="font-size: 2rem; margin-bottom: 0.75rem; display: block;">🌡️</span>
+          <p style="font-size: 0.875rem; color: hsl(var(--muted-foreground)); margin-bottom: 0.25rem;">Water Temperature</p>
+          <p id="temp-value" style="font-size: 1.5rem; font-weight: bold;">Loading...</p>
+        </div>
       </div>
     </div>
   </main>
+
+  <script>
+    // Fetch sensor data from Blynk APIs
+    async function fetchSensorData() {
+      try {
+        // Atmosphere & Ground
+        const aqiResponse = await fetch('https://blynk.cloud/external/api/get?token=9BusrE4D9ZwDUfeAvHOcXQjOkAFsWndW&V0');
+        const aqiData = await aqiResponse.text();
+        document.getElementById('aqi-value').textContent = aqiData || 'N/A';
+
+        const soilPlot1Response = await fetch('https://blynk.cloud/external/api/get?token=K3ndotq1yidwphc9JzSTL8wlWVTRXug2&V0');
+        const soilPlot1Data = await soilPlot1Response.text();
+        document.getElementById('soil-plot1').textContent = soilPlot1Data ? `${soilPlot1Data}%` : 'N/A';
+
+        const soilPlot2Response = await fetch('https://blynk.cloud/external/api/get?token=K3ndotq1yidwphc9JzSTL8wlWVTRXug2&V1');
+        const soilPlot2Data = await soilPlot2Response.text();
+        document.getElementById('soil-plot2').textContent = soilPlot2Data ? `${soilPlot2Data}%` : 'N/A';
+
+        // Hydroponic Data
+        const phResponse = await fetch('https://blynk.cloud/external/api/get?token=yz9RxlFqLYe7xhJda5WoOOxjlfl4xkFB&V1');
+        const phData = await phResponse.text();
+        document.getElementById('ph-value').textContent = phData || 'N/A';
+
+        const turbidityResponse = await fetch('https://blynk.cloud/external/api/get?token=yz9RxlFqLYe7xhJda5WoOOxjlfl4xkFB&V2');
+        const turbidityData = await turbidityResponse.text();
+        document.getElementById('turbidity-value').textContent = turbidityData ? `${turbidityData} NTU` : 'N/A';
+
+        const tempResponse = await fetch('https://blynk.cloud/external/api/get?token=yz9RxlFqLYe7xhJda5WoOOxjlfl4xkFB&V3');
+        const tempData = await tempResponse.text();
+        document.getElementById('temp-value').textContent = tempData ? `${tempData}°C` : 'N/A';
+      } catch (error) {
+        console.error('Error fetching sensor data:', error);
+        showToast('Failed to fetch sensor data', 'error');
+      }
+    }
+
+    // Fetch data on page load and refresh every 30 seconds
+    fetchSensorData();
+    setInterval(fetchSensorData, 30000);
+  </script>
 
   <script src="navigation.js"></script>
   <script src="auth-check.js"></script>
