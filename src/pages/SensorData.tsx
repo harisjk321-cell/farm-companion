@@ -37,52 +37,32 @@ const SensorData = () => {
 
   const fetchWeatherData = async () => {
     try {
-      if (!navigator.geolocation) {
-        setWeatherData({
-          temperature: "N/A",
-          humidity: "N/A",
-          windSpeed: "N/A",
-          condition: "Location unavailable",
-          feelsLike: "N/A",
-        });
-        return;
-      }
-
-      navigator.geolocation.getCurrentPosition(
-        async (position) => {
-          const lat = position.coords.latitude;
-          const lon = position.coords.longitude;
-          
-          const apiKey = 'c4fa883e493237b8c106dab40623e8c6';
-          const response = await fetch(
-            `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`
-          );
-          
-          if (!response.ok) throw new Error('Weather fetch failed');
-          
-          const data = await response.json();
-          
-          setWeatherData({
-            temperature: `${Math.round(data.main.temp)}°C`,
-            humidity: `${data.main.humidity}%`,
-            windSpeed: `${Math.round(data.wind.speed * 3.6)} km/h`,
-            condition: data.weather[0].main,
-            feelsLike: `${Math.round(data.main.feels_like)}°C`,
-          });
-        },
-        (error) => {
-          console.error('Geolocation error:', error);
-          setWeatherData({
-            temperature: "Location denied",
-            humidity: "N/A",
-            windSpeed: "N/A",
-            condition: "N/A",
-            feelsLike: "N/A",
-          });
-        }
+      const lat = 10.269609355943714;
+      const lon = 76.4001000044277;
+      
+      const apiKey = 'c4fa883e493237b8c106dab40623e8c6';
+      const response = await fetch(
+        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`
       );
+      
+      if (!response.ok) throw new Error('Weather fetch failed');
+      
+      const data = await response.json();
+      
+      setWeatherData({
+        temperature: `${Math.round(data.main.temp)}°C`,
+        humidity: `${data.main.humidity}%`,
+        windSpeed: `${Math.round(data.wind.speed * 3.6)} km/h`,
+        condition: data.weather[0].main,
+        feelsLike: `${Math.round(data.main.feels_like)}°C`,
+      });
     } catch (error) {
       console.error('Error fetching weather data:', error);
+      toast({
+        title: "Error",
+        description: "Failed to fetch weather data",
+        variant: "destructive",
+      });
     }
   };
 
