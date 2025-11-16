@@ -1,13 +1,127 @@
 import { Card } from "@/components/ui/card";
-import { Cloud, Thermometer, Droplets, Wind, Sun } from "lucide-react";
+import { Cloud, Thermometer, Droplets, Wind, Sun, Wind as WindIcon } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 const SensorData = () => {
-  const weatherData = {
-    temperature: "24°C",
-    humidity: "65%",
-    windSpeed: "12 km/h",
-    rainfall: "0 mm",
-    uvIndex: "6 (High)",
+  const { toast } = useToast();
+  const [weatherData, setWeatherData] = useState({
+    temperature: "Loading...",
+    humidity: "Loading...",
+    windSpeed: "Loading...",
+    condition: "Loading...",
+    feelsLike: "Loading...",
+  });
+
+  const [sensorData, setSensorData] = useState({
+    aqi: "Loading...",
+    soilPlot1: "Loading...",
+    soilPlot2: "Loading...",
+    ph: "Loading...",
+    turbidity: "Loading...",
+    waterTemp: "Loading...",
+  });
+
+  useEffect(() => {
+    fetchWeatherData();
+    fetchSensorData();
+    
+    const weatherInterval = setInterval(fetchWeatherData, 300000); // Every 5 minutes
+    const sensorInterval = setInterval(fetchSensorData, 30000); // Every 30 seconds
+    
+    return () => {
+      clearInterval(weatherInterval);
+      clearInterval(sensorInterval);
+    };
+  }, []);
+
+  const fetchWeatherData = async () => {
+    try {
+      if (!navigator.geolocation) {
+        setWeatherData({
+          temperature: "N/A",
+          humidity: "N/A",
+          windSpeed: "N/A",
+          condition: "Location unavailable",
+          feelsLike: "N/A",
+        });
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+          
+          const apiKey = 'c4fa883e493237b8c106dab40623e8c6';
+          const response = await fetch(
+            `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`
+          );
+          
+          if (!response.ok) throw new Error('Weather fetch failed');
+          
+          const data = await response.json();
+          
+          setWeatherData({
+            temperature: `${Math.round(data.main.temp)}°C`,
+            humidity: `${data.main.humidity}%`,
+            windSpeed: `${Math.round(data.wind.speed * 3.6)} km/h`,
+            condition: data.weather[0].main,
+            feelsLike: `${Math.round(data.main.feels_like)}°C`,
+          });
+        },
+        (error) => {
+          console.error('Geolocation error:', error);
+          setWeatherData({
+            temperature: "Location denied",
+            humidity: "N/A",
+            windSpeed: "N/A",
+            condition: "N/A",
+            feelsLike: "N/A",
+          });
+        }
+      );
+    } catch (error) {
+      console.error('Error fetching weather data:', error);
+    }
+  };
+
+  const fetchSensorData = async () => {
+    try {
+      const [aqiRes, soil1Res, soil2Res, phRes, turbidityRes, tempRes] = await Promise.all([
+        fetch('https://blynk.cloud/external/api/get?token=9BusrE4D9ZwDUfeAvHOcXQjOkAFsWndW&V0'),
+        fetch('https://blynk.cloud/external/api/get?token=K3ndotq1yidwphc9JzSTL8wlWVTRXug2&V0'),
+        fetch('https://blynk.cloud/external/api/get?token=K3ndotq1yidwphc9JzSTL8wlWVTRXug2&V1'),
+        fetch('https://blynk.cloud/external/api/get?token=yz9RxlFqLYe7xhJda5WoOOxjlfl4xkFB&V1'),
+        fetch('https://blynk.cloud/external/api/get?token=yz9RxlFqLYe7xhJda5WoOOxjlfl4xkFB&V2'),
+        fetch('https://blynk.cloud/external/api/get?token=yz9RxlFqLYe7xhJda5WoOOxjlfl4xkFB&V3'),
+      ]);
+
+      const [aqi, soil1, soil2, ph, turbidity, temp] = await Promise.all([
+        aqiRes.text(),
+        soil1Res.text(),
+        soil2Res.text(),
+        phRes.text(),
+        turbidityRes.text(),
+        tempRes.text(),
+      ]);
+
+      setSensorData({
+        aqi: aqi || "N/A",
+        soilPlot1: soil1 ? `${soil1}%` : "N/A",
+        soilPlot2: soil2 ? `${soil2}%` : "N/A",
+        ph: ph || "N/A",
+        turbidity: turbidity ? `${turbidity} NTU` : "N/A",
+        waterTemp: temp ? `${temp}°C` : "N/A",
+      });
+    } catch (error) {
+      console.error('Error fetching sensor data:', error);
+      toast({
+        title: "Error",
+        description: "Failed to fetch sensor data",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -18,11 +132,11 @@ const SensorData = () => {
           Sensor Data & Weather
         </h1>
         <p className="text-muted-foreground">
-          Environmental monitoring and weather conditions
+          Real-time environmental monitoring and sensor data
         </p>
       </div>
 
-      {/* Current Weather */}
+      {/* Current Weather Conditions */}
       <div className="mb-8">
         <h2 className="text-2xl font-bold mb-4">Current Conditions</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
@@ -46,29 +160,69 @@ const SensorData = () => {
 
           <Card className="p-6 text-center">
             <Cloud className="w-8 h-8 text-primary mx-auto mb-3" />
-            <p className="text-sm text-muted-foreground mb-1">Rainfall</p>
-            <p className="text-2xl font-bold">{weatherData.rainfall}</p>
+            <p className="text-sm text-muted-foreground mb-1">Weather</p>
+            <p className="text-2xl font-bold">{weatherData.condition}</p>
           </Card>
 
           <Card className="p-6 text-center">
             <Sun className="w-8 h-8 text-primary mx-auto mb-3" />
-            <p className="text-sm text-muted-foreground mb-1">UV Index</p>
-            <p className="text-2xl font-bold">{weatherData.uvIndex}</p>
+            <p className="text-sm text-muted-foreground mb-1">Feels Like</p>
+            <p className="text-2xl font-bold">{weatherData.feelsLike}</p>
           </Card>
         </div>
       </div>
 
-      {/* Sensor Data Display */}
-      <Card className="p-8">
-        <div className="text-center py-12">
-          <Cloud className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-          <h3 className="text-xl font-semibold mb-2">Sensor Network Data</h3>
-          <p className="text-muted-foreground max-w-md mx-auto">
-            Soil moisture, pH levels, nutrient content, and other sensor readings from your field network 
-            will be displayed here. Connect your IoT sensors to start monitoring.
-          </p>
+      {/* Atmosphere & Ground Section */}
+      <div className="mb-8">
+        <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
+          🌍 Atmosphere & Ground
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <Card className="p-6 text-center">
+            <span className="text-4xl mb-3 block">💨</span>
+            <p className="text-sm text-muted-foreground mb-1">Air Quality Index</p>
+            <p className="text-2xl font-bold">{sensorData.aqi}</p>
+          </Card>
+
+          <Card className="p-6 text-center">
+            <span className="text-4xl mb-3 block">💧</span>
+            <p className="text-sm text-muted-foreground mb-1">Soil Moisture - Plot 1</p>
+            <p className="text-2xl font-bold">{sensorData.soilPlot1}</p>
+          </Card>
+
+          <Card className="p-6 text-center">
+            <span className="text-4xl mb-3 block">💧</span>
+            <p className="text-sm text-muted-foreground mb-1">Soil Moisture - Plot 2</p>
+            <p className="text-2xl font-bold">{sensorData.soilPlot2}</p>
+          </Card>
         </div>
-      </Card>
+      </div>
+
+      {/* Hydroponic System Section */}
+      <div className="mb-8">
+        <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
+          🌱 Hydroponic System
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <Card className="p-6 text-center">
+            <span className="text-4xl mb-3 block">⚗️</span>
+            <p className="text-sm text-muted-foreground mb-1">pH Level</p>
+            <p className="text-2xl font-bold">{sensorData.ph}</p>
+          </Card>
+
+          <Card className="p-6 text-center">
+            <span className="text-4xl mb-3 block">🌊</span>
+            <p className="text-sm text-muted-foreground mb-1">Turbidity</p>
+            <p className="text-2xl font-bold">{sensorData.turbidity}</p>
+          </Card>
+
+          <Card className="p-6 text-center">
+            <span className="text-4xl mb-3 block">🌡️</span>
+            <p className="text-sm text-muted-foreground mb-1">Water Temperature</p>
+            <p className="text-2xl font-bold">{sensorData.waterTemp}</p>
+          </Card>
+        </div>
+      </div>
     </div>
   );
 };
