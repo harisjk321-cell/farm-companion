@@ -164,13 +164,13 @@ const SensorData = () => {
 
           <Card className="p-6 text-center">
             <span className="text-4xl mb-3 block">💧</span>
-            <p className="text-sm text-muted-foreground mb-1">Soil Moisture - Plot 1</p>
+            <p className="text-sm text-muted-foreground mb-1">Soil Dryness - Plot 1</p>
             <p className="text-2xl font-bold">{sensorData.soilPlot1}</p>
           </Card>
 
           <Card className="p-6 text-center">
             <span className="text-4xl mb-3 block">💧</span>
-            <p className="text-sm text-muted-foreground mb-1">Soil Moisture - Plot 2</p>
+            <p className="text-sm text-muted-foreground mb-1">Soil Dryness - Plot 2</p>
             <p className="text-2xl font-bold">{sensorData.soilPlot2}</p>
           </Card>
         </div>
