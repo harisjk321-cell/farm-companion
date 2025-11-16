@@ -6,7 +6,7 @@
   <title>Sensor Data & Weather - GROOT</title>
   <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<parameter name="body">
   <nav id="navigation"></nav>
   
   <main class="container">
@@ -15,6 +15,42 @@
         ☁️ Sensor Data & Weather
       </h1>
       <p style="color: hsl(var(--muted-foreground));">Real-time environmental monitoring and sensor data</p>
+    </div>
+
+    <!-- Current Weather Conditions -->
+    <div class="mb-8">
+      <h2 style="font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem;">Current Conditions</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+        <div class="card" style="text-align: center;">
+          <span style="font-size: 2rem; margin-bottom: 0.75rem; display: block;">🌡️</span>
+          <p style="font-size: 0.875rem; color: hsl(var(--muted-foreground)); margin-bottom: 0.25rem;">Temperature</p>
+          <p id="weather-temp" style="font-size: 1.5rem; font-weight: bold;">Loading...</p>
+        </div>
+
+        <div class="card" style="text-align: center;">
+          <span style="font-size: 2rem; margin-bottom: 0.75rem; display: block;">💧</span>
+          <p style="font-size: 0.875rem; color: hsl(var(--muted-foreground)); margin-bottom: 0.25rem;">Humidity</p>
+          <p id="weather-humidity" style="font-size: 1.5rem; font-weight: bold;">Loading...</p>
+        </div>
+
+        <div class="card" style="text-align: center;">
+          <span style="font-size: 2rem; margin-bottom: 0.75rem; display: block;">💨</span>
+          <p style="font-size: 0.875rem; color: hsl(var(--muted-foreground)); margin-bottom: 0.25rem;">Wind Speed</p>
+          <p id="weather-wind" style="font-size: 1.5rem; font-weight: bold;">Loading...</p>
+        </div>
+
+        <div class="card" style="text-align: center;">
+          <span style="font-size: 2rem; margin-bottom: 0.75rem; display: block;">☁️</span>
+          <p style="font-size: 0.875rem; color: hsl(var(--muted-foreground)); margin-bottom: 0.25rem;">Weather</p>
+          <p id="weather-condition" style="font-size: 1.5rem; font-weight: bold;">Loading...</p>
+        </div>
+
+        <div class="card" style="text-align: center;">
+          <span style="font-size: 2rem; margin-bottom: 0.75rem; display: block;">☀️</span>
+          <p style="font-size: 0.875rem; color: hsl(var(--muted-foreground)); margin-bottom: 0.25rem;">Feels Like</p>
+          <p id="weather-feels" style="font-size: 1.5rem; font-weight: bold;">Loading...</p>
+        </div>
+      </div>
     </div>
 
     <!-- Atmosphere & Ground Section -->
@@ -71,6 +107,51 @@
   </main>
 
   <script>
+    // Fetch weather data based on user's location
+    async function fetchWeatherData() {
+      try {
+        // Get user's location
+        if (!navigator.geolocation) {
+          document.getElementById('weather-temp').textContent = 'N/A';
+          document.getElementById('weather-humidity').textContent = 'N/A';
+          document.getElementById('weather-wind').textContent = 'N/A';
+          document.getElementById('weather-condition').textContent = 'Location unavailable';
+          document.getElementById('weather-feels').textContent = 'N/A';
+          return;
+        }
+
+        navigator.geolocation.getCurrentPosition(async (position) => {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+          
+          // Using OpenWeatherMap API (free tier)
+          const apiKey = 'c4fa883e493237b8c106dab40623e8c6'; // Free demo key
+          const weatherResponse = await fetch(
+            `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`
+          );
+          
+          if (!weatherResponse.ok) throw new Error('Weather fetch failed');
+          
+          const weatherData = await weatherResponse.json();
+          
+          document.getElementById('weather-temp').textContent = `${Math.round(weatherData.main.temp)}°C`;
+          document.getElementById('weather-humidity').textContent = `${weatherData.main.humidity}%`;
+          document.getElementById('weather-wind').textContent = `${Math.round(weatherData.wind.speed * 3.6)} km/h`;
+          document.getElementById('weather-condition').textContent = weatherData.weather[0].main;
+          document.getElementById('weather-feels').textContent = `${Math.round(weatherData.main.feels_like)}°C`;
+        }, (error) => {
+          console.error('Geolocation error:', error);
+          document.getElementById('weather-temp').textContent = 'Location denied';
+          document.getElementById('weather-humidity').textContent = 'N/A';
+          document.getElementById('weather-wind').textContent = 'N/A';
+          document.getElementById('weather-condition').textContent = 'N/A';
+          document.getElementById('weather-feels').textContent = 'N/A';
+        });
+      } catch (error) {
+        console.error('Error fetching weather data:', error);
+      }
+    }
+
     // Fetch sensor data from Blynk APIs
     async function fetchSensorData() {
       try {
@@ -106,10 +187,13 @@
     }
 
     // Fetch data on page load and refresh every 30 seconds
+    fetchWeatherData();
     fetchSensorData();
-    setInterval(fetchSensorData, 30000);
+    setInterval(fetchWeatherData, 300000); // Refresh weather every 5 minutes
+    setInterval(fetchSensorData, 30000); // Refresh sensors every 30 seconds
   </script>
 
+  <script src="config.js"></script>
   <script src="navigation.js"></script>
   <script src="auth-check.js"></script>
 </body>
