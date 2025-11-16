@@ -40,9 +40,15 @@ const SensorData = () => {
       const lat = 10.269609355943714;
       const lon = 76.4001000044277;
       
-      const apiKey = 'c4fa883e493237b8c106dab40623e8c6';
       const response = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/weather`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ lat, lon }),
+        }
       );
       
       if (!response.ok) throw new Error('Weather fetch failed');
