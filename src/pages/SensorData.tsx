@@ -2,6 +2,7 @@ import { Card } from "@/components/ui/card";
 import { Cloud, Thermometer, Droplets, Wind, Sun, Wind as WindIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const SensorData = () => {
   const { toast } = useToast();
@@ -39,28 +40,19 @@ const SensorData = () => {
     try {
       const lat = 10.269609355943714;
       const lon = 76.4001000044277;
-      
-      const response = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/weather`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ lat, lon }),
-        }
-      );
-      
-      if (!response.ok) throw new Error('Weather fetch failed');
-      
-      const data = await response.json();
-      
+
+      const { data, error } = await supabase.functions.invoke('weather', {
+        body: { lat, lon },
+      });
+
+      if (error) throw new Error(error.message || 'Weather fetch failed');
+
       setWeatherData({
-        temperature: `${Math.round(data.main.temp)}°C`,
-        humidity: `${data.main.humidity}%`,
-        windSpeed: `${Math.round(data.wind.speed * 3.6)} km/h`,
-        condition: data.weather[0].main,
-        feelsLike: `${Math.round(data.main.feels_like)}°C`,
+        temperature: `${Math.round((data as any).main.temp)}°C`,
+        humidity: `${(data as any).main.humidity}%`,
+        windSpeed: `${Math.round(((data as any).wind.speed || 0) * 3.6)} km/h`,
+        condition: (data as any).weather?.[0]?.main || 'N/A',
+        feelsLike: `${Math.round((data as any).main.feels_like)}°C`,
       });
     } catch (error) {
       console.error('Error fetching weather data:', error);
