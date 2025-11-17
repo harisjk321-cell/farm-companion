@@ -6,12 +6,11 @@ import heroImage from "@/assets/hero-farm.jpg";
 const Dashboard = () => {
   const botStatus = [
     { name: "Scout Robot", status: "operational", health: 95, lastActive: "2 mins ago" },
-    { name: "Weeder Robot", status: "operational", health: 88, lastActive: "5 mins ago" },
   ];
 
   const quickStats = [
     { icon: Leaf, label: "Healthy Plants", value: "2", color: "text-success" },
-    { icon: AlertTriangle, label: "Need Attention", value: "23", color: "text-warning" },
+    { icon: AlertTriangle, label: "Need Attention", value: "0", color: "text-warning" },
     { icon: Activity, label: "Active Sensors", value: "5", color: "text-info" },
   ];
 
