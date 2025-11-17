@@ -9,6 +9,7 @@ import BotHealth from "./pages/BotHealth";
 import PlantHealth from "./pages/PlantHealth";
 import SensorData from "./pages/SensorData";
 import CameraMonitor from "./pages/CameraMonitor";
+import WebcamMonitor from "./pages/WebcamMonitor";
 import Learn from "./pages/Learn";
 import Forum from "./pages/Forum";
 import Chatbot from "./pages/Chatbot";
@@ -31,6 +32,7 @@ const App = () => (
             <Route path="/plant-health" element={<PlantHealth />} />
             <Route path="/sensor-data" element={<SensorData />} />
             <Route path="/camera-monitor" element={<CameraMonitor />} />
+            <Route path="/webcam-monitor" element={<WebcamMonitor />} />
             <Route path="/learn" element={<Learn />} />
             <Route path="/forum" element={<Forum />} />
             <Route path="/chatbot" element={<Chatbot />} />

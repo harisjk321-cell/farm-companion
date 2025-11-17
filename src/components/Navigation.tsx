@@ -43,6 +43,7 @@ const Navigation = () => {
     { to: "/plant-health", icon: Leaf, label: "Plant Health" },
     { to: "/sensor-data", icon: Cloud, label: "Sensors & Weather" },
     { to: "/camera-monitor", icon: Camera, label: "ESP32 Camera" },
+    { to: "/webcam-monitor", icon: Camera, label: "Webcam Monitor" },
     { to: "/learn", icon: BookOpen, label: "Learn" },
     { to: "/forum", icon: Users, label: "Community" },
     { to: "/chatbot", icon: MessageSquare, label: "GROOT Chat" },
