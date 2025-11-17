@@ -6,7 +6,7 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { Loader2, Camera, RefreshCw } from 'lucide-react';
 
-const CAMERA_URL = "http://10.219.139.202/640x480.jpg";
+const CAMERA_URL = "http://10.219.139.36/";
 const CHECK_INTERVAL = 7000; // 7 seconds
 const ANALYSIS_COOLDOWN = 30000; // 30 seconds
 
