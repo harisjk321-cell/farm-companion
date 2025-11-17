@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import { Bot, Leaf, Cloud, BookOpen, Users, MessageSquare, Home, LogOut, LogIn, Camera } from "lucide-react";
+import { Bot, Leaf, Cloud, BookOpen, Users, MessageSquare, Home, LogOut, LogIn, Camera, Cpu } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
 import { useState, useEffect } from "react";
@@ -44,6 +44,7 @@ const Navigation = () => {
     { to: "/sensor-data", icon: Cloud, label: "Sensors & Weather" },
     { to: "/camera-monitor", icon: Camera, label: "ESP32 Camera" },
     { to: "/webcam-monitor", icon: Camera, label: "Webcam Monitor" },
+    { to: "/esp32-control", icon: Cpu, label: "ESP32 Control" },
     { to: "/learn", icon: BookOpen, label: "Learn" },
     { to: "/forum", icon: Users, label: "Community" },
     { to: "/chatbot", icon: MessageSquare, label: "GROOT Chat" },
