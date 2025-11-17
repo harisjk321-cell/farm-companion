@@ -20,7 +20,6 @@ const SensorData = () => {
     soilPlot2: "Loading...",
     ph: "Loading...",
     turbidity: "Loading...",
-    waterTemp: "Loading...",
   });
 
   useEffect(() => {
@@ -66,22 +65,20 @@ const SensorData = () => {
 
   const fetchSensorData = async () => {
     try {
-      const [aqiRes, soil1Res, soil2Res, phRes, turbidityRes, tempRes] = await Promise.all([
+      const [aqiRes, soil1Res, soil2Res, phRes, turbidityRes] = await Promise.all([
         fetch('https://blynk.cloud/external/api/get?token=9BusrE4D9ZwDUfeAvHOcXQjOkAFsWndW&V0'),
         fetch('https://blynk.cloud/external/api/get?token=K3ndotq1yidwphc9JzSTL8wlWVTRXug2&V0'),
         fetch('https://blynk.cloud/external/api/get?token=K3ndotq1yidwphc9JzSTL8wlWVTRXug2&V1'),
         fetch('https://blynk.cloud/external/api/get?token=yz9RxlFqLYe7xhJda5WoOOxjlfl4xkFB&V1'),
         fetch('https://blynk.cloud/external/api/get?token=yz9RxlFqLYe7xhJda5WoOOxjlfl4xkFB&V2'),
-        fetch('https://blynk.cloud/external/api/get?token=yz9RxlFqLYe7xhJda5WoOOxjlfl4xkFB&V3'),
       ]);
 
-      const [aqi, soil1, soil2, ph, turbidity, temp] = await Promise.all([
+      const [aqi, soil1, soil2, ph, turbidity] = await Promise.all([
         aqiRes.text(),
         soil1Res.text(),
         soil2Res.text(),
         phRes.text(),
         turbidityRes.text(),
-        tempRes.text(),
       ]);
 
       setSensorData({
@@ -90,7 +87,6 @@ const SensorData = () => {
         soilPlot2: soil2 ? `${soil2}%` : "N/A",
         ph: ph || "N/A",
         turbidity: turbidity ? `${turbidity} NTU` : "N/A",
-        waterTemp: temp ? `${temp}°C` : "N/A",
       });
     } catch (error) {
       console.error('Error fetching sensor data:', error);
@@ -181,7 +177,7 @@ const SensorData = () => {
         <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
           🌱 Hydroponic System
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Card className="p-6 text-center">
             <span className="text-4xl mb-3 block">⚗️</span>
             <p className="text-sm text-muted-foreground mb-1">pH Level</p>
@@ -192,12 +188,6 @@ const SensorData = () => {
             <span className="text-4xl mb-3 block">🌊</span>
             <p className="text-sm text-muted-foreground mb-1">Turbidity</p>
             <p className="text-2xl font-bold">{sensorData.turbidity}</p>
-          </Card>
-
-          <Card className="p-6 text-center">
-            <span className="text-4xl mb-3 block">🌡️</span>
-            <p className="text-sm text-muted-foreground mb-1">Water Temperature</p>
-            <p className="text-2xl font-bold">{sensorData.waterTemp}</p>
           </Card>
         </div>
       </div>
