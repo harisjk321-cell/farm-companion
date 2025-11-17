@@ -39,7 +39,7 @@ const Navigation = () => {
 
   const navItems = [
     { to: "/", icon: Home, label: "Dashboard" },
-    { to: "/bot-health", icon: Bot, label: "Bot Health" },
+    { to: "/bot-health", icon: Bot, label: "Farm Activity Logs" },
     { to: "/plant-health", icon: Leaf, label: "Plant Health" },
     { to: "/sensor-data", icon: Cloud, label: "Sensors & Weather" },
     { to: "/webcam-monitor", icon: Camera, label: "Webcam Monitor" },
