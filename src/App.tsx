@@ -8,7 +8,6 @@ import Dashboard from "./pages/Dashboard";
 import BotHealth from "./pages/BotHealth";
 import PlantHealth from "./pages/PlantHealth";
 import SensorData from "./pages/SensorData";
-import CameraMonitor from "./pages/CameraMonitor";
 import WebcamMonitor from "./pages/WebcamMonitor";
 import ESP32Control from "./pages/ESP32Control";
 import Learn from "./pages/Learn";
@@ -32,7 +31,6 @@ const App = () => (
             <Route path="/bot-health" element={<BotHealth />} />
             <Route path="/plant-health" element={<PlantHealth />} />
             <Route path="/sensor-data" element={<SensorData />} />
-            <Route path="/camera-monitor" element={<CameraMonitor />} />
             <Route path="/webcam-monitor" element={<WebcamMonitor />} />
             <Route path="/esp32-control" element={<ESP32Control />} />
             <Route path="/learn" element={<Learn />} />

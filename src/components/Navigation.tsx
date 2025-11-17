@@ -42,7 +42,6 @@ const Navigation = () => {
     { to: "/bot-health", icon: Bot, label: "Bot Health" },
     { to: "/plant-health", icon: Leaf, label: "Plant Health" },
     { to: "/sensor-data", icon: Cloud, label: "Sensors & Weather" },
-    { to: "/camera-monitor", icon: Camera, label: "ESP32 Camera" },
     { to: "/webcam-monitor", icon: Camera, label: "Webcam Monitor" },
     { to: "/esp32-control", icon: Cpu, label: "ESP32 Control" },
     { to: "/learn", icon: BookOpen, label: "Learn" },
